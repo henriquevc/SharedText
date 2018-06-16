@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Shared Text</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_text">TextActivity</string>
+    <string name="textoEditText" />
+    <string name="hintInputEditText">TAG</string>
+    <string name="erro_firebase">error in firebase</string>
+</resources>
