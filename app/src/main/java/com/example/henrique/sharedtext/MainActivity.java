@@ -84,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
                     for(Tag tagChild : tags){
                         if(tag.getTitulo().equals(tagChild.getTitulo().toString())){
                             existe = true;
-                            tag.setChave(tagChild.getChave());
+                            String chavef = tagChild.getChave();
+                            tag.setChave(chavef);
                             tag.setTexto(tagChild.getTexto());
                         }
                     }
