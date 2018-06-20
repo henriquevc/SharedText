@@ -1,8 +1,17 @@
 <resources>
     <string name="app_name">Shared Text</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_text">TextActivity</string>
-    <string name="textoEditText" />
-    <string name="hintInputEditText">TAG</string>
-    <string name="erro_firebase">error in firebase</string>
+    <string name="title_activity_text">TAG</string>
+
+    <string name="explicacao_permissao_camera">Enable the camera to take pictures</string>
+
+    <string name="sucesso_no_upload">Photo saved successfully</string>
+
+    <string name="falha_no_upload">Could not save photo</string>
+
+    <string name="falha_no_download">Failed to download photos</string>
+
+    <string name="falha_conexao_fb">Unable to connect to server</string>
+
+    <string name="foto_nao_confirmada">Photo not confirmed</string>
 </resources>
