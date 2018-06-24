@@ -8,4 +8,7 @@
     <string name="falha_no_download">" ダウンロードに失敗しました"</string>
     <string name="falha_no_upload">写真を保存できませんでした</string>
     <string name="action_settings">" 設定"</string>
+    <string name="hintInputEditText">タグ</string>
+    <string name="erro_firebase">error in firebase</string>
+    <string name="textoEditText" />
 </resources>
