@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">テキストを共有する</string>
+    <string name="falha_conexao_fb">サーバーに接続できません</string>
+    <string name="sucesso_no_upload">写真保存成功</string>
+    <string name="title_activity_text">タグ</string>
+    <string name="foto_nao_confirmada">未確認の写真</string>
+    <string name="falha_no_download">" ダウンロードに失敗しました"</string>
+    <string name="falha_no_upload">写真を保存できませんでした</string>
+    <string name="action_settings">" 設定"</string>
+</resources>

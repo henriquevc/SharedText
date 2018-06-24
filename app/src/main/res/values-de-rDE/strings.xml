@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Text teilen</string>
+    <string name="action_settings">"Einstellungen "</string>
+    <string name="explicacao_permissao_camera">Aktivieren Sie die Kamera, um ein Foto aufzunehmen</string>
+    <string name="sucesso_no_upload">Foto wird erfolgreich gespeichert</string>
+    <string name="falha_no_upload">Foto speichert mit Erfolg</string>
+    <string name="falha_no_download">" Download fehlgeschlagen"</string>
+    <string name="falha_conexao_fb">Verbindung zum Server nicht möglich</string>
+    <string name="foto_nao_confirmada">Unbestätigtes Foto</string>
+    <string name="title_activity_text">TAG</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Compartilhar Texto</string>
+    <string name="action_settings">Configurações</string>
+    <string name="title_activity_text">TAG</string>
+    <string name="explicacao_permissao_camera">Ative a camera para tirar foto</string>
+    <string name="sucesso_no_upload">Foto Salva com Sucesso</string>
+    <string name="falha_no_upload">Falha ao salvar foto</string>
+    <string name="falha_no_download">Falha no download</string>
+    <string name="falha_conexao_fb">Não foi possivel conectar com o servidor</string>
+    <string name="foto_nao_confirmada">Foto não confirmada</string>
+</resources>
