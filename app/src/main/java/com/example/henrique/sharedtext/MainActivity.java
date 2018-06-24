@@ -1,5 +1,6 @@
 package com.example.henrique.sharedtext;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -32,13 +33,10 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference tagsReference;
     private EditText textEditText;
     private TextInputEditText tagInputEditText;
-    private List<Tag> tags;
     private void configuraFirebase() {
         database = FirebaseDatabase.getInstance();
         tagsReference = database.getReference("tags");
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,20 +44,104 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        configuraFirebase();
+
         textEditText = (EditText) findViewById(R.id.textEditText);
         tagInputEditText = (TextInputEditText) findViewById(R.id.tagInputEditText);
-        final Tag tag = new Tag();
-        tags = new Stack<Tag>();
+
+        configuraFirebase();
+
+        tagInputEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                //Perde o foco do InputEditText
+                if(!hasFocus) {
+                    //chama a função executa o listener do firebase
+                    executarListener();
+                    //Toast.makeText(MainActivity.this, "Tag vazia! digite uma tag", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        textEditText.addTextChangedListener(tw);
+
+        tagInputEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                textEditText.removeTextChangedListener(tw);
+                textEditText.setText("");
+                textEditText.addTextChangedListener(tw);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    TextWatcher tw = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String titulo = tagInputEditText.getText().toString();
+            String texto = s.toString();
+            Tag tag = new Tag(titulo, texto);
+            //salva no firebase a tag alterada, acionando o listener do firebase
+            tagsReference.child(tag.getTitulo()).setValue(tag);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+
+
+    private void executarListener() {
+        //executa o listener do firebase
+        tagsListener();
+    }
+
+    private void tagsListener() {
         tagsReference.addValueEventListener(new ValueEventListener() {
+            //pega o nome da tag
+            final String titulo = tagInputEditText.getText().toString();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                tags.clear();
-                for (DataSnapshot filho : dataSnapshot.getChildren()){
-                    Tag tag = filho.getValue(Tag.class);
-                    tag.setChave(filho.getKey());
-                    tags.add(tag);
+                Tag tag = new Tag();
+                //procura a tag no firebase pelo id, que é o titulo da tag
+                tag = dataSnapshot.child(titulo).getValue(Tag.class);
+                //se não existir, criar
+                if(tag == null)
+                {
+                    tag = new Tag(titulo, "");
+                    tagsReference.child(titulo).setValue(tag);
                 }
+                //se o titulo for igual ao titulo da tag e ao que ta escrito no inputEditText
+                if(titulo.equals(tag.getTitulo()) && titulo.equals(tagInputEditText.getText().toString())){
+                    String texto = tag.getTexto();
+                    textEditText.removeTextChangedListener(tw);
+                    int posicao = textEditText.getSelectionStart();
+                    textEditText.setText(texto);
+                    textEditText.addTextChangedListener(tw);
+                    if(posicao <= texto.length()){
+                        textEditText.setSelection(posicao);
+                    }
+                    else{
+                        textEditText.setSelection(posicao-1);
+                    }
+                }
+
             }
 
             @Override
@@ -69,55 +151,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
 
-
-        tagInputEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            //Objeto tag criado
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                //Perde o foco do InputEditText
-                if(!hasFocus){
-                    //Verificar se a tag já existe no firebase
-                    tag.setTitulo(tagInputEditText.getText().toString());
-                    boolean existe = false;
-                    for(Tag tagChild : tags){
-                        if(tag.getTitulo().equals(tagChild.getTitulo().toString())){
-                            existe = true;
-                            tag.setChave(tagChild.getChave());
-                            tag.setTexto(tagChild.getTexto());
-                        }
-                    }
-                    //se a tag não existir, inserir
-                    if(!existe){
-                        String chave = tagsReference.push().getKey();
-                        tag.setChave(chave);
-                        tag.setTexto(textEditText.getText().toString());
-                        tagsReference.child(tag.getChave()).setValue(tag);
-                    }
-                    textEditText.setText(tag.getTexto());
-                }
-            }
-        });
-
-        textEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                tag.setTexto(s.toString());
-                tagsReference.child(tag.getChave()).setValue(tag);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        executarListener();
     }
 
     @Override
